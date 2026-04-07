@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nutribite - Fitness Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("https://images.pexels.com/photos/2171077/pexels-photo-2171077.jpeg") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 40px 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .question {
+      display: none;
+      margin-bottom: 20px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .question.active {
+      display: block;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 30px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .progress-bar {
+      height: 12px;
+      background-color: #28a745;
+      width: 0%;
+      margin-bottom: 25px;
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+
+    .summary-table {
+      width: 100%;
+      text-align: left;
+      margin-top: 20px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .summary-table th, .summary-table td {
+      padding: 8px 5px;
+      border-bottom: 1px solid #aaa;
+    }
+
+    .summary-table th {
+      width: 50%;
+      font-weight: 600;
+    }
+
+    .logout {
+      position: absolute;
+      bottom: 20px;
+      right: 25px;
+      background-color: red;
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome, {{ name }}! Here's Your Fitness Dashboard</h2>
+    <div class="progress-bar" id="progress"></div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <!-- Question Flow -->
+    <div id="questions">
+      <div class="question active" id="q1">
+        <p>Your Gender:</p>
+        <select id="gender">
+          <option value="">Select</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="question" id="q2">
+        <p>Your Body Type:</p>
+        <select id="bodytype">
+          <option value="">Select</option>
+          <option>Ectomorph (Lean)</option>
+          <option>Mesomorph (Athletic)</option>
+          <option>Endomorph (Stocky)</option>
+        </select>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="question" id="q3">
+        <p>Your Goal:</p>
+        <select id="goal">
+          <option value="">Select</option>
+          <option>Lose Weight</option>
+          <option>Gain Weight</option>
+          <option>Maintain Weight</option>
+        </select>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="question" id="q4">
+        <p>Current Weight (kg):</p>
+        <input type="number" id="currentWeight" min="30" max="200" />
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="question" id="q5">
+        <p>Target Weight (kg):</p>
+        <input type="number" id="targetWeight" min="30" max="200" />
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="question" id="q6">
+        <p>Reason for Goal:</p>
+        <select id="reason">
+          <option value="">Select</option>
+          <option>Fitness</option>
+          <option>Medical</option>
+          <option>Bodybuilding</option>
+          <option>Other</option>
+        </select>
+        <button onclick="nextQuestion()">Next</button>
+      </div>
+
+      <div class="question" id="q7">
+        <p>Timeline (in weeks):</p>
+        <input type="number" id="timeline" min="1" max="52" />
+        <button onclick="finish()">Finish</button>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="question" id="summary">
+      <h3>Your Fitness Plan Summary</h3>
+      <table class="summary-table" id="summaryTable"></table>
+      <button onclick="window.location.href='/index'">Proceed to Plan</button>
+      <button onclick="resetPlan()">Reset Plan</button>
+    </div>
+  </div>
+
+  <a href="/logout" class="logout">Logout</a>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 7;
+
+    function nextQuestion() {
+      const current = document.getElementById(`q${currentStep}`);
+      const next = document.getElementById(`q${currentStep + 1}`);
+      if (current && next) {
+        current.classList.remove('active');
+        next.classList.add('active');
+        currentStep++;
+        updateProgress();
+      }
+    }
+
+    function updateProgress() {
+      const percent = (currentStep - 1) / totalSteps * 100;
+      document.getElementById("progress").style.width = percent + "%";
+    }
+
+    function finish() {
+      const data = {
+        gender: document.getElementById("gender").value,
+        bodytype: document.getElementById("bodytype").value,
+        goal: document.getElementById("goal").value,
+        currentWeight: document.getElementById("currentWeight").value,
+        targetWeight: document.getElementById("targetWeight").value,
+        reason: document.getElementById("reason").value,
+        timeline: document.getElementById("timeline").value
+      };
+
+      fetch("/save_data", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      }).then(() => {
+        showSummary(data);
+      });
+    }
+
+ function finish() {
+  const data = {
+    gender: document.getElementById("gender").value,
+    bodytype: document.getElementById("bodytype").value,
+    goal: document.getElementById("goal").value,
+    currentWeight: document.getElementById("currentWeight").value,
+    targetWeight: document.getElementById("targetWeight").value,
+    reason: document.getElementById("reason").value,
+    timeline: document.getElementById("timeline").value
+  };
+
+  fetch("/save_data", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  }).then(() => {
+    window.location.href = "/index";  // 👈 Redirect to index.html after saving
+  });
+}
+
+
+  </script>
+</body>
+</html>

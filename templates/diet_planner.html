@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nutribite | Diet Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root {
+      --green-dark: #2e7d32;
+      --green: #66bb6a;
+      --green-light: #dcedc8;
+      --yellow-light: #fff9c4;
+      --white: #ffffff;
+      --warning: #f44336;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+  font-family: 'Poppins', sans-serif;
+  background: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: var(--green-dark);
+}
+
+
+    .container {
+      max-width: 1000px;
+      background-color: rgba(255, 255, 255, 0.95);
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 2px solid var(--green);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: var(--green-dark);
+    }
+
+    header .tagline {
+      color: var(--green);
+      font-size: 1.1rem;
+      margin-top: 0.3rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--green);
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: var(--white);
+      color: var(--green-dark);
+    }
+
+    .btn {
+      background: linear-gradient(to right, var(--green), #9ccc65);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--green-dark);
+    }
+
+    .error {
+      background: #ffebee;
+      color: var(--warning);
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .spinner {
+      border: 5px solid #c8e6c9;
+      border-top: 5px solid var(--green);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin: 1rem auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .week-nav, .day-plan, .meal-card, .options-grid {
+      margin-top: 1rem;
+    }
+
+    .day-btn {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      background: var(--green-light);
+      border: 2px solid var(--green);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .day-btn.active {
+      background: var(--green);
+      color: white;
+    }
+
+    .meal-card {
+      background: var(--green-light);
+      border-left: 4px solid var(--green);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .option-card {
+      background: var(--white);
+      border: 1px solid var(--green);
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .nutrition-facts {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+
+    button.get-recipe {
+      margin-top: 0.5rem;
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+    
+  body {
+    background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');  /* Add your image in /static/images */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  .content-container {
+    background-color: rgba(255, 255, 255, 0.92);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 40px auto;
+    max-width: 1000px;
+    border: 2px solid green;
+  }
+
+
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-leaf"></i> Nutribyte | Diet Planner</h1>
+      <p class="tagline">Personalized weekly plan for a greener lifestyle</p>
+    </header>
+
+    <div class="planner-card">
+      <div class="form-group">
+        <label>Daily Calorie Target</label>
+        <input type="number" id="calories" placeholder="e.g., 2000"/>
+      </div>
+      <div class="form-group">
+        <label>Diet Type</label>
+        <select id="diet-type">
+          <option value="veg">Vegetarian</option>
+          <option value="non-veg">Non-Vegetarian</option>
+          <option value="vegan">Vegan</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Allergens (comma-separated)</label>
+        <input type="text" id="allergens" placeholder="e.g., nuts, dairy"/>
+      </div>
+      <div class="form-group">
+        <label>Options Per Meal</label>
+        <select id="options-per-meal">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+
+      <button id="generate-btn" class="btn">Generate Plan</button>
+      <div class="error" id="error"></div>
+    </div>
+
+    <div class="loading" id="loading" style="display:none;">
+      <div class="spinner"></div>
+      <p>Generating your plan...</p>
+    </div>
+
+    <div class="plan-container" id="plan-container" style="display:none;">
+      <div id="week-nav"></div>
+      <div id="weekly-plan"></div>
+      <button class="btn" id="download-btn">Download PDF</button>
+    </div>
+  </div>
+  <!-- Recipe Modal -->
+<div id="recipeModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h3>AI-Generated Recipe</h3>
+    <pre id="recipeContent" style="white-space: pre-wrap;"></pre>
+  </div>
+</div>
+
+<style>
+.modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); z-index: 999;
+}
+.modal-content {
+  background-color: #fff; margin: 10% auto; padding: 20px;
+  border-radius: 8px; width: 70%; max-height: 80%; overflow-y: auto;
+}
+.close-btn {
+  float: right; font-size: 24px; cursor: pointer;
+}
+</style>
+
+
+ <script>
+  const generateBtn = document.getElementById('generate-btn');
+  const loadingDiv = document.getElementById('loading');
+  const errorDiv = document.getElementById('error');
+  const planContainer = document.getElementById('plan-container');
+  const weekNav = document.getElementById('week-nav');
+  const weeklyPlan = document.getElementById('weekly-plan');
+  let currentPlan = null;
+
+  generateBtn.addEventListener('click', async () => {
+    const calories = parseInt(document.getElementById('calories').value);
+    const diet = document.getElementById('diet-type').value;
+    const allergens = document.getElementById('allergens').value;
+    const options = parseInt(document.getElementById('options-per-meal').value);
+
+    if (!calories || calories < 1200 || calories > 5000) {
+      showError("Please enter a valid calorie target (1200–5000)");
+      return;
+    }
+
+    loadingDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
+    planContainer.style.display = 'none';
+
+    try {
+      const res = await fetch('/generate-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          calories,
+          diet_type: diet,
+          allergens: allergens.split(',').map(a => a.trim()),
+          options_per_meal: options
+        })
+      });
+
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      currentPlan = data.plan;
+      displayPlan(currentPlan);
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      loadingDiv.style.display = 'none';
+    }
+  });
+
+  function showError(msg) {
+    errorDiv.innerText = msg;
+    errorDiv.style.display = 'block';
+  }
+
+  function displayPlan(plan) {
+    weekNav.innerHTML = '';
+    weeklyPlan.innerHTML = '';
+    plan.forEach((day, index) => {
+      const btn = document.createElement('button');
+      btn.innerText = day.day;
+      btn.className = 'day-btn';
+      if (index === 0) btn.classList.add('active');
+      btn.onclick = () => showDay(index);
+      weekNav.appendChild(btn);
+
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'day-plan';
+      if (index !== 0) dayDiv.style.display = 'none';
+
+      day.meals.forEach(meal => {
+        const mealCard = document.createElement('div');
+        mealCard.className = 'meal-card';
+        mealCard.innerHTML = `<h3>${meal.meal_name} ~ ${Math.round(meal.target_calories)} cal</h3>`;
+        const optionsGrid = document.createElement('div');
+
+        meal.options.forEach((option, i) => {
+          const optionCard = document.createElement('div');
+          optionCard.className = 'option-card';
+          optionCard.innerHTML = `
+            <div><strong>Option ${i + 1}: ${option.name}</strong></div>
+            <div>${Math.round(option.calories)} cal</div>
+            <div class="nutrition-facts">
+              <span>Protein: ${option.protein}g</span>
+              <span>Carbs: ${option.carbs}g</span>
+              <span>Fat: ${option.fat}g</span>
+            </div>
+            <button class="get-recipe" onclick="showRecipe('${option.name.replace(/'/g, "\\'")}')">Get Oil-Free Recipe</button>
+          `;
+          optionsGrid.appendChild(optionCard);
+        });
+
+        mealCard.appendChild(optionsGrid);
+        dayDiv.appendChild(mealCard);
+      });
+
+      weeklyPlan.appendChild(dayDiv);
+    });
+
+    planContainer.style.display = 'block';
+  }
+
+  function showDay(index) {
+    document.querySelectorAll('.day-btn').forEach((b, i) => b.classList.toggle('active', i === index));
+    document.querySelectorAll('.day-plan').forEach((d, i) => d.style.display = i === index ? 'block' : 'none');
+  }
+
+  // Recipe modal logic
+  function showRecipe(foodName) {
+    fetch('/generate-recipe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ food_name: foodName })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById("recipeContent").textContent = data.recipe;
+        document.getElementById("recipeModal").style.display = "block";
+      } else {
+        alert("Failed to get recipe: " + data.error);
+      }
+    });
+  }
+
+  function closeModal() {
+    document.getElementById("recipeModal").style.display = "none";
+  }
+
+  // PDF download logic
+  document.getElementById('download-btn').addEventListener('click', () => {
+    if (!currentPlan) return;
+    try {
+      const planStr = encodeURIComponent(JSON.stringify(currentPlan));
+      const downloadUrl = `/download-plan?plan=${planStr}`;
+      window.open(downloadUrl, '_blank');
+    } catch (e) {
+      alert("Failed to prepare plan for download.");
+    }
+  });
+</script>

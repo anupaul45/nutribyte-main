@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OCR Food Analysis | NutriBite</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("https://media.istockphoto.com/id/2206210783/photo/large-group-of-raw-food-for-a-well-balanced-diet-includes-carbohydrates-proteins-and-dietary.webp?s=1024x1024&w=is&k=20&c=ni7tu7bpS9ckBYmhmI6rOg5vFn3_6_ra3fCRp_dvjzI=") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding-top: 50px;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      max-width: 700px;
+      width: 90%;
+      padding: 50px 45px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      border: 1px solid #c8e6c9;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-3px);
+    }
+
+    h1 {
+      color: #1b5e20;
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    h2 {
+      color: #2e7d32;
+      border-left: 5px solid #81c784;
+      padding-left: 8px;
+      margin-top: 25px;
+      font-size: 20px;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    input[type="file"] {
+      margin: 20px 0;
+      padding: 10px;
+      border: 2px dashed #81c784;
+      border-radius: 8px;
+      background-color: #f1f8e9;
+      color: #1b5e20;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    input[type="file"]:hover {
+      border-color: #43a047;
+      background-color: #e8f5e9;
+    }
+
+    button {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 12px 22px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      width: 50%;
+    }
+
+    button:hover {
+      background: #1b5e20;
+      transform: scale(1.03);
+    }
+
+    .result {
+      margin-top: 50px;
+      text-align: left;
+      padding: 25px;
+      border-radius: 12px;
+      background: #111;
+      box-shadow: inset 0 0 15px rgba(139, 195, 74, 0.3);
+      border: 1px solid #c5e1a5;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .safe {
+      color: #81c784;
+      font-weight: bold;
+    }
+
+    .harmful {
+      color: #ef5350;
+      font-weight: bold;
+    }
+
+    pre {
+      background: #212121;
+      padding: 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #4caf50;
+      color: #e8f5e9;
+      font-size: 15px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.5;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 10px 0;
+    }
+
+    li {
+      background: #2e2b2b;
+      margin: 6px 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer-note {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #4e7d4e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌿 NUTRIBiTE | Packed Food Health Check</h1>
+    <p class="footer-note">Upload a food label to detect harmful ingredients using OCR + Gemini AI</p>
+    
+    <form id="ocrForm">
+      <input type="file" name="file" id="fileInput" accept="image/*" required>
+      <br>
+      <button type="submit">Analyze</button>
+    </form>
+
+    <div id="output" class="result" style="display:none;">
+      <h2>Extracted Text</h2>
+      <pre id="extractedText"></pre>
+
+      <h2>Detected Harmful Keywords</h2>
+      <ul id="harmfulList"></ul>
+
+      <h2>Gemini Verdict</h2>
+      <p id="geminiAnalysis"></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("ocrForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      const response = await fetch("/extract_text", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      const outputDiv = document.getElementById("output");
+      outputDiv.style.display = "block";
+
+      if (data.error) {
+        document.getElementById("extractedText").textContent = "Error: " + data.error;
+        return;
+      }
+
+      // Highlight harmful keywords directly inside extracted text
+      let text = data.extracted_text;
+      const harmfulWords = ["msg", "monosodium glutamate", "trans fat", "hydrogenated", "aspartame", "acesulfame", "high fructose", "maida", "refined flour"];
+      harmfulWords.forEach(word => {
+        const regex = new RegExp(`\\b(${word})\\b`, "gi");
+        text = text.replace(regex, '<span class="harmful">$1</span>');
+      });
+      document.getElementById("extractedText").innerHTML = text;
+
+      // Show harmful keyword list
+      const harmfulList = document.getElementById("harmfulList");
+      harmfulList.innerHTML = "";
+      data.harmful_keywords.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        li.className = item.toLowerCase().includes("no harmful") ? "safe" : "harmful";
+        harmfulList.appendChild(li);
+      });
+
+      // Show Gemini analysis (red if unhealthy)
+      const verdict = document.getElementById("geminiAnalysis");
+      verdict.textContent = data.gemini_analysis;
+      verdict.className = data.gemini_analysis.toLowerCase().includes("safe") ? "safe" : "harmful";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Food Image</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center/cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #4a662a;
+    }
+    input[type="file"], input[type="text"], input[type="number"] {
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 90%;
+      font-size: 14px;
+    }
+    .preview {
+      margin: 15px 0;
+    }
+    .preview img {
+      max-width: 250px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .btn {
+      background: linear-gradient(135deg, #9acd32, #cfff8d);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .extra {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .extra label {
+      display: block;
+      font-weight: bold;
+      color: #4a662a;
+    }
+  </style>
+  <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function(){
+        const output = document.getElementById('preview-img');
+        output.src = reader.result;
+        document.getElementById('preview-container').style.display = "block";
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+</head>
+<body>
+  <div class="card">
+    <h2>Upload Your Food Image</h2>
+    <form action="{{ url_for('predict_image') }}" method="post" enctype="multipart/form-data">
+      <input type="file" name="food_image" accept="image/*" onchange="previewImage(event)" required>
+
+      <div class="preview" id="preview-container" style="display:none;">
+        <p><b>Preview:</b></p>
+        <img id="preview-img" src="" alt="Food Preview">
+      </div>
+
+      
+
+      <button type="submit" class="btn">Analyze Food</button>
+    </form>
+  </div>
+</body>
+</html>

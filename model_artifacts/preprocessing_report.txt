@@ -1,0 +1,8 @@
+Preprocessing Report
+====================
+Original data sample:
+{'Weight': {0: 92.08519020069818, 1: 61.08912444471096, 2: 82.45403663089465}, 'Height': {0: 1.7602495143340122, 1: 1.595498707757723, 2: 1.816538312922449}, 'BMI': {0: 29.71948799321624, 1: 23.997775552178616, 2: 24.98749945937673}, 'Gender': {0: 0, 1: 0, 2: 0}, 'Age': {0: 59, 1: 25, 2: 50}, 'BMIcase': {0: 'over weight', 1: 'normal', 2: 'normal'}, 'Exercise Recommendation Plan': {0: 5, 1: 4, 2: 4}, 'BMI_Category': {0: 4, 1: 2, 2: 2}, 'Exercise_Recommendation': {0: 4, 1: 3, 2: 3}}
+Feature names: ['Weight', 'Height', 'Age', 'Gender']
+Target classes: ['1', '2', '3', '4', '5', '6', '7']...
+Train shape: (4000, 4)
+Test shape: (1000, 4)

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Detection Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url("https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center/cover;
+      color: #fff;
+      padding: 40px;
+      margin: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.81);
+      padding: 25px;
+      border-radius: 14px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+    }
+    h2 {
+      text-align: center;
+      color: #2e7d32;
+    }
+    .preview {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .preview img {
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.76);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: rgba(0, 0, 0, 1);
+    }
+    th, td {
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.7);
+      color: #2e7d32;
+    }
+    tr:hover {
+      background: rgba(255,255,255,0.15);
+    }
+    .totals {
+      font-weight: bold;
+      background: rgba(255,255,0,0.3);
+      color: #000;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    .action-btn {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #9acd32);
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      color: #2e7d32;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .action-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+  <script>
+    function downloadCSV() {
+      let rows = [];
+      let headers = [];
+      document.querySelectorAll("table th").forEach(th => headers.push(th.innerText));
+      rows.push(headers.join(","));
+      document.querySelectorAll("table tbody tr").forEach(tr => {
+        let cells = Array.from(tr.querySelectorAll("td")).map(td => td.innerText);
+        rows.push(cells.join(","));
+      });
+      let csvContent = rows.join("\n");
+      let blob = new Blob([csvContent], { type: "text/csv" });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "food_analysis.csv";
+      link.click();
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>Predicted Food Items & Nutritional Values</h2>
+      <div class="preview">
+        <img src="{{ image_url }}" alt="Uploaded Food">
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Detected Name</th>
+            <th>Matched Food</th>
+            <th>Serving</th>
+            <th>Quantity</th>
+            <th>Confidence</th>
+            <th>Calories</th>
+            <th>Protein</th>
+            <th>Carbs</th>
+            <th>Fat</th>
+            <th>Class</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for it in items %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ it.DetectedName }}</td>
+            <td>{{ it.MatchedFood }}</td>
+            <td>{{ it.Serving }}</td>
+            <td>{{ it.Quantity }}</td>
+            <td>{{ it.Confidence }}</td>
+            <td>{{ it.Calories }}</td>
+            <td>{{ it.Protein }}</td>
+            <td>{{ it.Carbs }}</td>
+            <td>{{ it.Fat }}</td>
+            <td>{{ it.Class }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="totals">
+            <td colspan="6">TOTAL</td>
+            <td>{{ totals.Calories }}</td>
+            <td>{{ totals.Protein }}</td>
+            <td>{{ totals.Carbs }}</td>
+            <td>{{ totals.Fat }}</td>
+            <td>-</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="btn-group">
+        <button class="action-btn" onclick="downloadCSV()">Download as CSV</button>
+        <a href="{{ url_for('image_calorie_page') }}">
+          <button type="button" class="action-btn">Back to Upload</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

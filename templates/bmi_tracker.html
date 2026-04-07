@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutribite - Your Smart Fitness Companion</title>
+    <style>
+        /* Modern Fitness Theme with Animations */
+        :root {
+            --primary-green: #2ecc71;
+            --dark-green: #27ae60;
+            --energy-orange: #f39c12;
+            --power-red: #e74c3c;
+            --vital-blue: #3498db;
+            --pure-white: #ffffff;
+            --light-gray: #ecf0f1;
+            --dark-text: #2c3e50;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: 
+                url('https://images.pexels.com/photos/8436595/pexels-photo-8436595.jpeg?_gl=1*9krlj9*_ga*MTE4NTc0MjIzMS4xNzQ4NDk1NTcz*_ga_8JE65Q40S6*czE3NTUyNjYzNjkkbzMkZzEkdDE3NTUyNjY5ODAkajU5JGwwJGgw') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--dark-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 0; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--dark-green);
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            background: linear-gradient(45deg, var(--dark-green), var(--vital-blue));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            text-align: center;
+            color: var(--energy-orange);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            font-style: italic;
+        }
+
+        .form-container {
+            background-color: var(--pure-white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-container:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-green);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--vital-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            background: linear-gradient(to right, var(--primary-green), var(--vital-blue));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .error {
+            color: var(--power-red);
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        .result-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-card h2 {
+            color: var(--vital-blue);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 1rem;
+        }
+
+        .bmi-display {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            color: var(--dark-green);
+            margin: 1rem 0;
+        }
+
+        .category-display {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
+
+        .underweight {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--vital-blue);
+        }
+
+        .normal {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--dark-green);
+        }
+
+        .overweight {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--energy-orange);
+        }
+
+        .obese {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--power-red);
+        }
+
+        .recommendation-section {
+            margin-top: 2rem;
+        }
+
+        .recommendation-section h3 {
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .recommendation-section h3::before {
+            content: "💡";
+            margin-right: 10px;
+        }
+
+        .exercise-card {
+            background-color: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-card h4 {
+            color: var(--vital-blue);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise-card h4::before {
+            content: "🏋️";
+            margin-right: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .ai-response {
+            line-height: 1.8;
+        }
+
+        .ai-response h4, .ai-response h5 {
+            color: var(--dark-green);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-response ul {
+            padding-left: 1.5rem;
+        }
+
+        .ai-response li {
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-container {
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-green), var(--vital-blue));
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Pulse animation for important elements */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-dumbbell"></i> Nutribite| BMI & Excercise Generator</h1>
+        <p class="tagline">Your Personalized Fitness Revolution Powered by AI</p>
+        
+        <div class="form-container pulse">
+            <div class="form-group">
+                <label for="height"><i class="fas fa-ruler-vertical"></i> Height (cm)</label>
+                <input type="number" id="height" placeholder="Enter your height" required min="100" max="250">
+            </div>
+            
+            <div class="form-group">
+                <label for="weight"><i class="fas fa-weight"></i> Weight (kg)</label>
+                <input type="number" id="weight" placeholder="Enter your weight" required min="30" max="300">
+            </div>
+            
+            <div class="form-group">
+                <label for="age"><i class="fas fa-birthday-cake"></i> Age</label>
+                <input type="number" id="age" placeholder="Enter your age" required min="12" max="120">
+            </div>
+            
+            <div class="form-group">
+                <label for="gender"><i class="fas fa-venus-mars"></i> Gender</label>
+                <select id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="activity"><i class="fas fa-running"></i> Activity Level</label>
+                <select id="activity" required>
+                    <option value="">Select Activity Level</option>
+                    <option value="sedentary">Sedentary (little or no exercise)</option>
+                    <option value="light">Lightly active (light exercise 1-3 days/week)</option>
+                    <option value="moderate">Moderately active (moderate exercise 3-5 days/week)</option>
+                    <option value="active">Active (hard exercise 6-7 days/week)</option>
+                    <option value="very_active">Very active (very hard exercise & physical job)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="goal"><i class="fas fa-bullseye"></i> Fitness Goal</label>
+                <select id="goal" required>
+                    <option value="">Select Fitness Goal</option>
+                    <option value="weight_loss">Weight Loss</option>
+                    <option value="muscle_gain">Muscle Gain</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="endurance">Endurance Training</option>
+                    <option value="general">General Fitness</option>
+                </select>
+            </div>
+            
+            <button id="calculateBtn" onclick="calculateBMI()">
+                <i class="fas fa-magic"></i> GENERATE MY FITNESS PLAN
+            </button>
+            
+            <div id="error" class="error" style="display: none;"></div>
+        </div>
+        
+        <div id="results" class="result-card" style="display: none;">
+            <h2><i class="fas fa-chart-line"></i> Your Fitness Analysis</h2>
+            
+            <div class="bmi-display" id="bmiValue"></div>
+            <div class="category-display" id="bmiCategory"></div>
+            
+            <div class="progress-container">
+                <h4>Your Progress</h4>
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <p id="progressText">Based on your BMI category</p>
+            </div>
+            
+            <div class="recommendation-section">
+                <h3><i class="fas fa-robot"></i> AI-Powered Recommendations</h3>
+                <div id="aiRecommendations">
+                    <div class="exercise-card">
+                        <h4>Loading your personalized plan...</h4>
+                        <div style="text-align: center;">
+                            <div class="loading" style="margin: 0 auto;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="savePlanBtn" style="margin-top: 1.5rem; background: var(--energy-orange);">
+                <i class="fas fa-save"></i> SAVE MY PLAN
+            </button>
+        </div>
+    </div>
+
+    <script>
+        async function calculateBMI() {
+            // Reset UI
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+            
+            // Get input values
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const activity = document.getElementById('activity').value;
+            const goal = document.getElementById('goal').value;
+            
+            // Validate inputs
+            if (!height || !weight || !age || !gender || !activity || !goal) {
+                showError('Please fill all fields');
+                return;
+            }
+            
+            if (height < 100 || height > 250) {
+                showError('Please enter a valid height between 100cm and 250cm');
+                return;
+            }
+            
+            if (weight < 30 || weight > 300) {
+                showError('Please enter a valid weight between 30kg and 300kg');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const btn = document.getElementById('calculateBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ANALYZING YOUR PROFILE...';
+                
+                // Calculate BMI
+                const bmi = (weight / ((height/100) ** 2)).toFixed(1);
+                const category = getBMICategory(bmi);
+                
+                // Display results
+                document.getElementById('bmiValue').textContent = bmi;
+                document.getElementById('bmiCategory').textContent = category;
+                document.getElementById('bmiCategory').className = 'category-display ' + category.toLowerCase().split(' ')[0];
+                
+                
+                // Set progress bar based on BMI
+                setProgressBar(bmi);
+                
+                // Show results
+                document.getElementById('results').style.display = 'block';
+                
+                // Get AI recommendations from Flask backend
+                const response = await fetch('/ai_recommendation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        bmi: bmi,
+                        height: height,
+                        weight: weight,
+                        age: age,
+                        gender: gender,
+                        activity: activity,
+                        goal: goal,
+                        category: category
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Display AI recommendations
+                displayAIRecommendations(data.recommendation);
+                
+            } catch (error) {
+                showError('An error occurred: ' + error.message);
+                console.error('Calculation error:', error);
+            } finally {
+                // Reset button
+                const btn = document.getElementById('calculateBtn');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-magic"></i> GENERATE MY FITNESS PLAN';
+            }
+        }
+        
+        function setProgressBar(bmi) {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            // Calculate progress percentage (just for visualization)
+            let progress = 0;
+            let text = "";
+            
+            if (bmi < 18.5) {
+                progress = (bmi / 18.5) * 33;
+                text = "You're underweight - let's build healthy mass!";
+            } else if (bmi < 25) {
+                progress = 33 + ((bmi - 18.5) / (25 - 18.5)) * 33;
+                text = "Great job! You're in the healthy range!";
+            } else {
+                progress = 66 + ((Math.min(bmi, 40) - 25) / (40 - 25)) * 34;
+                if (bmi < 30) {
+                    text = "You're overweight - we can help you get back on track!";
+                } else {
+                    text = "Let's work together to improve your health!";
+                }
+            }
+            
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = text;
+        }
+        
+        function displayAIRecommendations(aiResponse) {
+            const aiContainer = document.getElementById('aiRecommendations');
+            
+            // Check if the response is HTML or plain text
+            if (aiResponse.startsWith('<')) {
+                // If the AI returned HTML
+                aiContainer.innerHTML = aiResponse;
+            } else {
+                // If the AI returned plain text, format it with basic HTML
+                const formattedResponse = aiResponse
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic text
+                    .replace(/\n\n/g, '</p><p>') // Paragraphs
+                    .replace(/\n/g, '<br>'); // Line breaks
+                
+                aiContainer.innerHTML = `
+                    <div class="exercise-card">
+                        <div class="ai-response">
+                            <h4>Your Custom Fitness Plan</h4>
+                            <p>${formattedResponse}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Add event listener to save button
+            document.getElementById('savePlanBtn').addEventListener('click', savePlan);
+        }
+        
+        function getBMICategory(bmi) {
+            bmi = parseFloat(bmi);
+            if (bmi < 18.5) return 'UNDERWEIGHT - Time to build healthy mass!';
+            if (bmi < 25) return 'HEALTHY - Great job maintaining your weight!';
+            if (bmi < 30) return 'OVERWEIGHT - Let\'s work on getting healthier!';
+            return 'OBESE - We can help you improve your health!';
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            errorDiv.style.display = 'block';
+        }
+        
+        async function savePlan() {
+            try {
+                const btn = document.getElementById('savePlanBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SAVING...';
+                
+                // Get all the relevant data to save
+                const planData = {
+                    bmi: document.getElementById('bmiValue').textContent,
+                    category: document.getElementById('bmiCategory').textContent,
+                    recommendations: document.getElementById('aiRecommendations').innerHTML,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Send to backend
+                const response = await fetch('/save_data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(planData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save plan');
+                }
+                
+                // Show success message
+                const errorDiv = document.getElementById('error');
+                errorDiv.innerHTML = '<i class="fas fa-check-circle"></i> Plan saved successfully!';
+                errorDiv.style.display = 'block';
+                errorDiv.style.color = 'var(--dark-green)';
+                errorDiv.style.backgroundColor = 'rgba(46, 204, 113, 0.1)';
+                
+            } catch (error) {
+                showError('Failed to save plan: ' + error.message);
+            } finally {
+                const btn = document.getElementById('savePlanBtn');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> SAVE MY PLAN';
+            }
+        }
+    </script>
+</body>
+</html>

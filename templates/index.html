@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nutribite</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg?_gl=1*1mid8bv*_ga*MTE4NTc0MjIzMS4xNzQ4NDk1NTcz*_ga_8JE65Q40S6*czE3NTUyNjYzNjkkbzMkZzEkdDE3NTUyNjYzOTgkajMxJGwwJGgw") no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 40px;
+      background: rgba(0,0,0,0.6);
+      padding: 15px 30px;
+      border-radius: 8px;
+    }
+    .tabs {
+      display: flex;
+      gap: 20px;
+    }
+    .tab-button {
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: 2px solid #28a745;
+      padding: 20px 30px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: 0.3s;
+      font-size: 18px;
+      text-decoration: none;
+    }
+    .tab-button:hover {
+      background: #46da68ff;
+      border-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Your Health Hub</h1>
+  <div class="tabs">
+    <a class="tab-button" href="/bmi_tracker">BMI Tracker</a>
+    <a class="tab-button" href="/diet_planner">Diet Planner</a>
+    <a class="tab-button" href="/image-calorie">Calorie Checker</a>
+    <a class="tab-button" href="/ocr">Packet Scanner</a>
+    <a class="tab-button" href="/logout">LOGOUT</a>
+  </div>
+</body>
+</html>

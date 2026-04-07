@@ -1,0 +1,36 @@
+{
+    "SS@gmail.com": {
+        "name": "Shanu",
+        "password": "12345",
+        "age": "80",
+        "mobile": "0123456789"
+    },
+    "dd@gmail.com": {
+        "name": "Daizy",
+        "password": "12345",
+        "age": "20",
+        "mobile": "989898989",
+        "gender": "other"
+    },
+    "chahat@gmail.com": {
+        "name": "Chahat",
+        "password": "12345",
+        "age": "20",
+        "mobile": "9878987000",
+        "gender": "other"
+    },
+    "ritu@gmail.com": {
+        "name": "Ritu",
+        "password": "12345",
+        "age": "45",
+        "mobile": "7678987600",
+        "gender": "other"
+    },
+    "rishil@gmail.com": {
+        "name": "Rishil",
+        "password": "12345",
+        "age": "21",
+        "mobile": "9973125367",
+        "gender": "other"
+    }
+}

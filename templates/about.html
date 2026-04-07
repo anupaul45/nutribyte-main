@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | NutriBite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #e8f5e9, #f9fbe7);
+            margin: 0;
+            color: #1b5e20;
+        }
+
+        header {
+            background: linear-gradient(90deg, #2e7d32, #66bb6a);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-left: 6px solid #66bb6a;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #c8e6c9;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-box {
+            background: #f1f8e9;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid #c5e1a5;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-6px);
+            background: #e8f5e9;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-box i {
+            font-size: 40px;
+            color: #388e3c;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 15px;
+        }
+
+        .cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta a {
+            background: #43a047;
+            color: white;
+            padding: 14px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .cta a:hover {
+            background: #2e7d32;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 30px;
+            }
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1> Nutribite</h1>
+        <p>Your AI-powered Diet & Fitness Companion</p>
+    </header>
+
+    <div class="container">
+        <section class="section">
+            <h2>About Nutribite</h2>
+            <p>
+                <strong>Nutribite</strong> is an AI-driven health and nutrition platform that helps you make smarter dietary choices.
+                It combines advanced <strong>AI models (Gemini)</strong>, intelligent <strong>OCR scanning</strong>, and a <strong>data-driven diet planner</strong>
+                to guide you toward a healthier lifestyle — all personalized just for you.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Key Features</h2>
+            <div class="features">
+                <div class="feature-box">
+                    <i class="fa-solid fa-utensils"></i>
+                    <h3>AI Diet Planner</h3>
+                    <p>Generate personalized weekly meal plans using Indian foods. Supports calorie goals, allergens, and veg/non-veg preferences.</p>
+                </div>
+
+                <div class="feature-box">
+                    <i class="fa-solid fa-image"></i>
+                    <h3>Image Calorie Detection</h3>
+                    <p>Upload a food photo and get its estimated calories and nutrition breakdown instantly using Gemini Vision + Indian Food Dataset.</p>
+                </div>
+
+                <div class="feature-box">
+                    <i class="fa-solid fa-eye"></i>
+                    <h3>OCR Ingredient Scanner</h3>
+                    <p>Scan food labels to extract ingredients, detect harmful additives like <strong>MSG</strong> or <strong>Maida</strong>, and view AI health analysis.</p>
+                </div>
+
+                <div class="feature-box">
+                    <i class="fa-solid fa-brain"></i>
+                    <h3>AI Recipe Generator</h3>
+                    <p>Get quick, oil-free, and calorie-counted healthy recipes generated by Gemini AI — customized for your ingredients.</p>
+                </div>
+
+                <div class="feature-box">
+                    <i class="fa-solid fa-weight-scale"></i>
+                    <h3>BMI Tracker</h3>
+                    <p>Track your BMI, receive health category insights, and get AI recommendations for maintaining ideal weight goals.</p>
+                </div>
+
+                <div class="feature-box">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <h3>User Dashboard</h3>
+                    <p>Personalized dashboard that saves your preferences, calories, and fitness data for a seamless experience every time.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Our Mission</h2>
+            <p>
+                Nutribite’s mission is to make healthy eating easy, intelligent, and enjoyable.
+                We empower users with <strong>AI-powered insights</strong> and real-time data analysis
+                — helping you eat right, live healthy, and feel great every day.
+            </p>
+        </section>
+
+        <div class="cta">
+            <a href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; NutriBite | Powered by AI, Built with Flask 💚
+    </footer>
+
+</body>
+</html>
